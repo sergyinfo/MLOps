@@ -1,0 +1,14 @@
+# Базуємось на повному образі Python
+FROM python:3.9
+
+WORKDIR /app
+
+# Встановлюємо залежності глобально (не оптимально)
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+# Копіюємо весь код та модель
+COPY . .
+
+# Команда запуску за замовчуванням
+ENTRYPOINT ["python", "inference.py"]

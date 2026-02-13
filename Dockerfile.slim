@@ -1,0 +1,38 @@
+# --- Stage 1: Builder ---
+FROM python:3.9-slim as builder
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+
+# Створюємо віртуальне середовище
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Встановлюємо залежності.
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu && \
+    pip install --no-cache-dir pillow
+
+# --- Stage 2: Runtime ---
+FROM python:3.9-slim as runtime
+
+WORKDIR /app
+
+# Копіюємо віртуальне середовище з builder
+COPY --from=builder /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Копіюємо тільки необхідні файли (код і модель)
+COPY mobilenet_v2.pt .
+COPY inference.py .
+
+# Створюємо користувача без прав root
+RUN useradd -m appuser
+USER appuser
+
+ENTRYPOINT ["python", "inference.py"]

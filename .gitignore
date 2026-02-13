@@ -1,0 +1,14 @@
+# Virtual Environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# IDE files
+.idea/
+
+# Log files
+*.log
+
+mobilenet_v2.pt
