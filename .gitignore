@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environment
+venv/
+ENV/
+env/
+
+# PyCharm
+.idea/
+
+# PyTorch models
+*.pt
+*.pth
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+.terraform/
+.terraform.*
+
+
+*.tfstate
+*.tfstate.*
+
+
+*.tfvars
