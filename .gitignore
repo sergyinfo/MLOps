@@ -31,3 +31,4 @@ dist/
 
 
 *.tfvars
+.DS_Store

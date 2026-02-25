@@ -1,0 +1,10 @@
+server:
+  service:
+    type: ClusterIP
+  extraArgs:
+    - --insecure # Дозволяє зручний доступ через port-forward без проблем із SSL
+configs:
+  cm:
+    timeout.reconciliation: 180s # Як часто ArgoCD перевіряє Git
+  rbac:
+    policy.default: role:readonly # Базові права доступу
