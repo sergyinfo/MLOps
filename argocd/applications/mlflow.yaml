@@ -18,6 +18,15 @@ spec:
           - --backend-store-uri=postgresql://postgres:password123@postgres-postgresql.mlops.svc.cluster.local:5432/mlflow
           - --default-artifact-root=s3://mlflow-artifacts/
           - --host=0.0.0.0
+        extraEnvVars:
+          - name: AWS_ACCESS_KEY_ID
+            value: "admin"
+          - name: AWS_SECRET_ACCESS_KEY
+            value: "password123"
+          - name: MLFLOW_S3_ENDPOINT_URL
+            value: "http://minio.mlops.svc.cluster.local:9000"
+          - name: MLFLOW_S3_IGNORE_TLS
+            value: "true"
         service:
           type: ClusterIP
           port: 5000

@@ -1,24 +1,25 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: pushgateway
+  name: monitoring-stack
   namespace: infra-tools
 spec:
   project: default
   source:
     repoURL: 'https://prometheus-community.github.io/helm-charts'
-    chart: prometheus-pushgateway
-    targetRevision: 2.x.x
+    chart: kube-prometheus-stack
+    targetRevision: 56.6.2
     helm:
       values: |
-        service:
-          type: ClusterIP
-          port: 9091
-        serviceMonitor:
+        grafana:
           enabled: true
-          namespace: monitoring
-          additionalLabels:
-            release: monitoring-stack
+        prometheus:
+          enabled: true
+          prometheusSpec:
+            serviceMonitorSelectorNilUsesHelmValues: false
+            serviceMonitorSelector: {}
+        alertmanager:
+          enabled: false
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: monitoring

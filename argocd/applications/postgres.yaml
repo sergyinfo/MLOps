@@ -12,7 +12,7 @@ spec:
     helm:
       values: |
         global:
-          imageRegistry: "public.ecr.aws" # <--- БЕЗЛІМІТНЕ ДЗЕРКАЛО AWS
+          imageRegistry: "public.ecr.aws"
         auth:
           postgresPassword: password123
           database: mlflow
