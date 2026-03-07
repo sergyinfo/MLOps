@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minio
+  namespace: infra-tools
+spec:
+  project: default
+  source:
+    repoURL: 'https://charts.bitnami.com/bitnami'
+    chart: minio
+    targetRevision: 12.x.x
+    helm:
+      values: |
+        image:
+          registry: public.ecr.aws
+          repository: bitnami/minio
+        auth:
+          rootUser: admin
+          rootPassword: password123
+        defaultBuckets: "mlflow-artifacts"
+        persistence:
+          enabled: false
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: mlops
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

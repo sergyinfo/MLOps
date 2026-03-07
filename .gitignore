@@ -6,7 +6,7 @@ __pycache__/
 .Python
 
 # Virtual Environment
-venv/
+experiments/venv/
 ENV/
 env/
 
