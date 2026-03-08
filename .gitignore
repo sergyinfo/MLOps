@@ -1,0 +1,4 @@
+.idea
+.DS_Store
+terraform/lambda/validate.zip
+terraform/lambda/log_metrics.zip
