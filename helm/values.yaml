@@ -1,0 +1,9 @@
+replicaCount: 1
+image:
+  repository: docker.io/infosergyinfo/mlops
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 80

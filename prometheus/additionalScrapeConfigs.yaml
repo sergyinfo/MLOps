@@ -1,0 +1,7 @@
+- job_name: 'aiops-service'
+  kubernetes_sd_configs:
+  - role: pod
+  relabel_configs:
+  - source_labels: [__meta_kubernetes_pod_label_app]
+    action: keep
+    regex: aiops-service

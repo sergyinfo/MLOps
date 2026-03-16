@@ -1,0 +1,35 @@
+stages:
+  - retrain
+  - build
+  - deploy
+
+retrain-model:
+  stage: retrain
+  image: python:3.9
+  script:
+    - python model/train.py
+  artifacts:
+    paths:
+      - model/model.pkl
+
+build-image:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker build -t $DOCKER_REGISTRY/aiops-service:$CI_COMMIT_SHORT_SHA .
+    - docker push $DOCKER_REGISTRY/aiops-service:$CI_COMMIT_SHORT_SHA
+
+update-gitops:
+  stage: deploy
+  image: alpine:latest
+  script:
+    - apk add git
+    - git config --global user.email "ci@gitlab.com"
+    - git config --global user.name "GitLab CI"
+    - # Оновлення тега в Helm values
+    - sed -i "s/tag:.*/tag: $CI_COMMIT_SHORT_SHA/" helm/values.yaml
+    - git add helm/values.yaml
+    - git commit -m "chore: update image tag to $CI_COMMIT_SHORT_SHA [skip ci]"
+    - git push origin HEAD:final-project
